@@ -1,0 +1,37 @@
+<project name="Tetris" basedir="." default="main">
+
+    <property name="src.dir"        value="src"/>
+    <property name="build.dir"      value="build"/>
+    <property name="img.dir"        value="img"/>
+    <property name="build.img.dir"  value="${build.dir}\img"/>
+    <property name="main-class"     value="tetris.Main"/>
+
+    <target name="main" depends="jar"/>
+
+    <target name="build">
+        <mkdir dir="${build.dir}"/>
+        <copy todir="${build.img.dir}">
+            <fileset dir="${img.dir}"/>
+        </copy>
+        <javac srcdir="${src.dir}" destdir="${build.dir}"/>
+    </target>
+
+    <target name="jar" depends="build">
+        <jar destfile="${ant.project.name}.jar" basedir="${build.dir}">
+            <manifest>
+                <attribute name="Main-Class" value="${main-class}"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="run" depends="jar">
+        <java jar="${ant.project.name}.jar" fork="true"/>
+    </target>
+
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+        <delete file="${ant.project.name}.jar"/>
+    </target>
+
+</project>
