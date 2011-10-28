@@ -1,0 +1,68 @@
+TETRIS
+
+==================== Controls =============================
+
+Player 1:
+
+I			rotate left
+J			move left
+L			move right
+K			move down
+space		instant drop
+shift		rotate right
+
+
+Player 2 (numlock must be on):
+
+Num8		rotate left
+Num4		move left
+Num6		move right
+Num5		move down
+Down Arrow	instant drop
+Up Arrow	rotate right
+
+
+
+============= Compiling (Requires Ant) ====================
+
+ant         // compiles and creates a jar
+ant compile // compiles all the classes
+ant run     // creates and runs jar
+
+
+==================== Options ==============================
+
+num.players
+- must be 1 or 2
+
+indestructibles
+- must be true or false
+- this adds indestructible lines to the board after a certain amount of time and at a given interval
+
+start.time
+- start time in milliseconds of indestructible lines
+
+rate
+- interval in milliseconds between indestructible lines added
+
+p#.control
+- human for human players
+- Class name for AIs
+
+game.delay
+- general delay of game speed
+- 5 is a good default value
+
+line.delay
+- time in milliseconds of line animation
+- 0 will result in lines being removed instantly
+
+ai.delay
+- delay in milliseconds after each command the ai executes
+
+
+====================== AI How To ==========================
+
+TODO
+
+for now look at HueristicAI and LowestAI for examples.
