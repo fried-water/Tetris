@@ -8,6 +8,7 @@ package tetris.control;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 import tetris.core.Player;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -44,7 +45,10 @@ public abstract class AIController {
     protected final void addCommand(Command command) {
         try {
             Thread.sleep(delay);
-        } catch(Exception e) {}
+        } catch(Exception e) {
+            JOptionPane.showMessageDialog(null, "Uncaught exception while sleeping: " + e.toString());
+            e.printStackTrace();
+        }
         player.addCommand(command);
     }
 
@@ -60,29 +64,38 @@ public abstract class AIController {
 
     public final void newPiece() {
         lock.lock();
+        try {
+            newPiece = true;
 
-        newPiece = true;
-
-        cv.signal();
-
-        lock.unlock();
+            cv.signal();
+        } finally {
+            lock.unlock();
+        }
     }
 
     private void sleepUntilNewPiece() {
         lock.lock();
 
-        if(!newPiece) {
-            cv.awaitUninterruptibly();
-        }
-        
-        newPiece = false;
+        try {
 
-        lock.unlock();
+            if(!newPiece) {
+                cv.awaitUninterruptibly();
+            }
+        
+            newPiece = false;
+        } finally {
+            lock.unlock();
+        }
     }
 
     private void mainLoop() {
         while(!player.hasLost()) {
-            process();
+            try {
+                process();
+            } catch(Exception e) {
+                player.kill();
+                JOptionPane.showMessageDialog(null, "Uncaught exception during AI: " + e.toString());
+            }
             sleepUntilNewPiece();
         }
     }

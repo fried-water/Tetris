@@ -39,7 +39,7 @@ public class Game {
     }
 
     synchronized void addLines(int player, int lines) {
-        if(num_players == 2){
+        if(num_players == 2 && !players[1 - player].hasLost()){
             players[1 - player].addExtraLines(lines);
         }
     }

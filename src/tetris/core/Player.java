@@ -96,8 +96,8 @@ public class Player {
         if(!options.isHuman(pID)) {
             try {
                 ai = (AIController) options.getAIClass(pID).newInstance();
-            } catch (Exception ex) {
-                ex.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
                 JOptionPane.showMessageDialog(null, "Error instantiating AI for player " + pID);
                 System.exit(1);
             }
@@ -119,6 +119,11 @@ public class Player {
 
     public boolean hasLost() {
         return lost;
+    }
+
+    public void kill() {
+        lost = true;
+        endTime = System.currentTimeMillis();
     }
 
     public int[][] getMergedBoard() {
@@ -203,7 +208,10 @@ public class Player {
             linesToBeRemoved = lines;
             try {
                 Thread.sleep(lineDelay);
-            } catch (InterruptedException ex) { }
+            } catch (InterruptedException e) {
+                JOptionPane.showMessageDialog(null, "Uncaught exception while sleeping: " + e.toString());
+                e.printStackTrace();
+            }
             linesToBeRemoved = null;
         }
 
@@ -359,7 +367,7 @@ public class Player {
 
     private void mainLoop() {
         int counter = 0;
-        while(true) {
+        while(!lost) {
             if(!drop && hasCommand()) {
                 executeCommand(nextCommand());
             }
@@ -385,8 +393,7 @@ public class Player {
                     addLinesToBoard(getExtraLines());
 
                     if(!currentPiece.canStick(board)) {
-                        lost = true;
-                        endTime = System.currentTimeMillis();
+                        kill();
                         break;
                     }
 
@@ -401,7 +408,10 @@ public class Player {
             }
             try {
                 Thread.sleep(gameDelay);
-            } catch (InterruptedException ex) { }
+            } catch (InterruptedException e) {
+                JOptionPane.showMessageDialog(null, "Uncaught exception while sleeping: " + e.toString());
+                e.printStackTrace();
+            }
         }
     }
 }
