@@ -11,8 +11,7 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import javax.swing.JPanel;
-import tetris.core.Game;
-import tetris.util.GameAccessor;
+import tetris.core.Player;
 
 /**
  *
@@ -23,9 +22,9 @@ public class ScorePanel extends JPanel {
     private final static int PANEL_HEIGHT = 6;
     private final static int TILE_SIZE = 32;
 
-    private int player;
+    private Player player;
 
-    public ScorePanel(int player) {
+    public ScorePanel(Player player) {
         this.player = player;
 
         setPreferredSize(new Dimension(PANEL_WIDTH * TILE_SIZE,
@@ -45,8 +44,6 @@ public class ScorePanel extends JPanel {
     private void drawScores(Graphics g) {
         g.setFont(new Font("SansSerif", Font.BOLD, 18));
 
-        Game game = GameAccessor.getGame();
-
         FontMetrics metrics = g.getFontMetrics();
 
         g.drawString("Lines", 5, 25);
@@ -54,17 +51,17 @@ public class ScorePanel extends JPanel {
         g.drawString("Score", 5, 125);
         g.drawString("Time", 5, 175);
 
-        g.drawString("" + game.getPlayer(player).getNumLines(), 
-                TILE_SIZE * PANEL_WIDTH - 10 - metrics.stringWidth("" + game.getPlayer(player).getNumLines()),
+        g.drawString("" + player.getNumLines(), 
+                TILE_SIZE * PANEL_WIDTH - 10 - metrics.stringWidth("" + player.getNumLines()),
                 25);
-        g.drawString("" + game.getPlayer(player).getLevel(), 
-                TILE_SIZE * PANEL_WIDTH - 10 - metrics.stringWidth("" + game.getPlayer(player).getLevel()),
+        g.drawString("" + player.getLevel(), 
+                TILE_SIZE * PANEL_WIDTH - 10 - metrics.stringWidth("" + player.getLevel()),
                 75);
-        g.drawString("" + game.getPlayer(player).getScore(),
-                TILE_SIZE * PANEL_WIDTH - 10 - metrics.stringWidth("" + game.getPlayer(player).getScore()),
+        g.drawString("" + player.getScore(),
+                TILE_SIZE * PANEL_WIDTH - 10 - metrics.stringWidth("" + player.getScore()),
                 125);
-        g.drawString(game.getPlayer(player).getTimeString(),
-                TILE_SIZE * PANEL_WIDTH - 10 - metrics.stringWidth("" + game.getPlayer(player).getTimeString()),
+        g.drawString(player.getTimeString(),
+                TILE_SIZE * PANEL_WIDTH - 10 - metrics.stringWidth("" + player.getTimeString()),
                 175);
     }
 }

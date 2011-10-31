@@ -10,7 +10,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import javax.swing.JPanel;
 import tetris.util.ResourceManager;
-import tetris.util.GameAccessor;
+import tetris.core.Player;
 import tetris.piece.PieceDef;
 
 /**
@@ -23,9 +23,9 @@ public class NextPiecePanel extends JPanel {
     private final static int PANEL_HEIGHT = 4;
     private final static int TILE_SIZE = 32;
 
-    private int player;
+    private Player player;
 
-    public NextPiecePanel(int player) {
+    public NextPiecePanel(Player player) {
         this.player = player;
 
         setPreferredSize(new Dimension(PANEL_WIDTH * TILE_SIZE,
@@ -43,8 +43,8 @@ public class NextPiecePanel extends JPanel {
     }
 
     private void drawPiece(Graphics g) {
-        int[][] data = GameAccessor.getGame().getPlayer(player).getNextPiece().getData(0);
-        int num = GameAccessor.getGame().getPlayer(player).getNextPiece().getNum();
+        int[][] data = player.getNextPiece().getData(0);
+        int num = player.getNextPiece().getNum();
 
         for(int y = 0;y < data[0].length; y++) {
             for(int x = 0;x < data.length; x++) {

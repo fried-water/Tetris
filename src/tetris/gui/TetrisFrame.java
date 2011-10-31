@@ -11,7 +11,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import javax.swing.JFrame;
 import tetris.control.KeyController;
-import tetris.util.GameAccessor;
+import tetris.core.Game;
 
 /**
  *
@@ -19,7 +19,7 @@ import tetris.util.GameAccessor;
  */
 public class TetrisFrame extends JFrame {
 
-    public TetrisFrame() {
+    public TetrisFrame(Game game) {
         setTitle("Tetris");
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -31,11 +31,11 @@ public class TetrisFrame extends JFrame {
 
         c.setLayout(new GridBagLayout());
 
-        populate(c);
+        populate(c, game);
         pack();
         setVisible(true);
 
-        this.addKeyListener(new KeyController());
+        this.addKeyListener(new KeyController(game));
 
         new Thread(new Runnable(){
             public void run() {
@@ -45,43 +45,43 @@ public class TetrisFrame extends JFrame {
         }).start();
     }
 
-    private void populate(Container frame) {
+    private void populate(Container frame, Game game) {
         GridBagConstraints c = new GridBagConstraints();
 
         int x = 0;
 
         modifyConstraints(c, x, 0, 10, 20);
-        frame.add(new BoardPanel(0), c);
+        frame.add(new BoardPanel(game.getPlayer(0)), c);
 
         x += 10;
 
-        if(GameAccessor.getGame().getNumPlayers() == 2) {
+        if(game.getNumPlayers() == 2) {
             modifyConstraints(c, x++, 0, 1, 20);
-            frame.add(new IncomingLinesPanel(0), c);
+            frame.add(new IncomingLinesPanel(game.getPlayer(0)), c);
         }
 
         modifyConstraints(c, x, 0, 5, 4);
-        frame.add(new NextPiecePanel(0), c);
+        frame.add(new NextPiecePanel(game.getPlayer(0)), c);
 
         modifyConstraints(c, x, 4, 5, 6);
-        frame.add(new ScorePanel(0), c);
+        frame.add(new ScorePanel(game.getPlayer(0)), c);
 
-        if(GameAccessor.getGame().getNumPlayers() == 2) {
+        if(game.getNumPlayers() == 2) {
             modifyConstraints(c, x, 10, 5, 4);
-            frame.add(new NextPiecePanel(1), c);
+            frame.add(new NextPiecePanel(game.getPlayer(1)), c);
 
             modifyConstraints(c, x, 14, 5, 6);
-            frame.add(new ScorePanel(1), c);
+            frame.add(new ScorePanel(game.getPlayer(1)), c);
 
             x+=5;
 
             modifyConstraints(c, x, 0, 1, 20);
-            frame.add(new IncomingLinesPanel(1), c);
+            frame.add(new IncomingLinesPanel(game.getPlayer(1)), c);
 
             x++;
 
             modifyConstraints(c, x, 0, 10, 20);
-            frame.add(new BoardPanel(1), c);
+            frame.add(new BoardPanel(game.getPlayer(1)), c);
 
             
         }

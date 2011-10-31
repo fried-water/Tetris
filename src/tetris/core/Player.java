@@ -95,7 +95,7 @@ public class Player {
 
         if(!options.isHuman(pID)) {
             try {
-                ai = (AIController) options.getAIClass(pID).newInstance();
+                ai = options.getAIClass(pID).newInstance();
             } catch (Exception e) {
                 e.printStackTrace();
                 JOptionPane.showMessageDialog(null, "Error instantiating AI for player " + pID);

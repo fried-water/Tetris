@@ -5,7 +5,6 @@
 
 package tetris.piece;
 
-import tetris.option.Options;
 
 /**
  *

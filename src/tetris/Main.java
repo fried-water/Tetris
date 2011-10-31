@@ -6,7 +6,7 @@
 package tetris;
 
 import tetris.util.ResourceManager;
-import tetris.util.GameAccessor;
+import tetris.core.Game;
 import tetris.gui.TetrisFrame;
 import tetris.option.Options;
 
@@ -16,9 +16,9 @@ import tetris.option.Options;
  */
 public class Main {
     public static void main(String[] args) {
+    	Game game = new Game(new Options());
         ResourceManager.loadResources();
-        GameAccessor.generateGame(new Options());
-        new TetrisFrame();
-        GameAccessor.getGame().start();
+        new TetrisFrame(game);
+        game.start();
     }
 }

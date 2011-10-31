@@ -11,8 +11,9 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.util.List;
 import javax.swing.JPanel;
+
+import tetris.core.Player;
 import tetris.util.ResourceManager;
-import tetris.util.GameAccessor;
 
 /**
  *
@@ -24,9 +25,9 @@ public class BoardPanel extends JPanel {
     private final static int BOARD_HEIGHT = 20;
     private final static int TILE_SIZE = 32;
 
-    private int player;
+    private Player player;
 
-    public BoardPanel(int player) {
+    public BoardPanel(Player player) {
         this.player = player;
 
         setPreferredSize(new Dimension(BOARD_WIDTH * TILE_SIZE,
@@ -38,14 +39,14 @@ public class BoardPanel extends JPanel {
         g.clearRect(0, 0, BOARD_WIDTH * TILE_SIZE, BOARD_HEIGHT * TILE_SIZE);
 
         drawBoard(g);
-        if(GameAccessor.getGame().getPlayer(player).hasLost()) {
+        if(player.hasLost()) {
             drawEndGameText(g);
         }
     }
 
     private void drawBoard(Graphics g) {
-        int[][] board = GameAccessor.getGame().getPlayer(player).getMergedBoard();
-        List<Integer> lines = GameAccessor.getGame().getPlayer(player).getLinesToBeRemoved();
+        int[][] board = player.getMergedBoard();
+        List<Integer> lines = player.getLinesToBeRemoved();
 
         for(int y = 1; y < board[0].length; y++) {
             for(int x = 0; x < board.length; x++) {
