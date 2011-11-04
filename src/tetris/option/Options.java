@@ -33,12 +33,17 @@ public class Options {
         }
     }
 
-    public Class<AIController> getAIClass(int pID) {
+	public Class<AIController> getAIClass(int pID) {
         String name = options.getProperty(OptionConstants.CONTROL.replace("#", ""+(pID + 1)));
         try {
             return (Class<AIController>) Class.forName(AI_PACKAGE + name);
         } catch (ClassNotFoundException e) {
             JOptionPane.showMessageDialog(null, "No AI found for " + AI_PACKAGE + name);
+            System.exit(1);
+
+            return null;
+        } catch (ClassCastException e) {
+        	JOptionPane.showMessageDialog(null, "No AI found for " + AI_PACKAGE + name);
             System.exit(1);
 
             return null;

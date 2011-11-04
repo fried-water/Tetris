@@ -63,6 +63,65 @@ ai.delay
 
 ====================== AI How To ==========================
 
-TODO
+For starters your AI needs to be in the package 'tetris.ai', secondly rename p#.control to the name of your class to have that player be controller by your ai.
 
-for now look at HueristicAI and LowestAI for examples.
+
+
+There are 2 classes you can subclass to implement an AI.
+
+1. You can subclass AIController and that gives you complete control over your player and real time access to the board state at any time.
+
+The noteworthy functions:
+
+void process();
+
+This is the function you need to implement and will be called everytime there is a new peice placed on your board.
+
+void addCommand(Command command);
+
+This is the function you call to send a command to the game for your player to execute. The command you add will be added to the end of a move queue specific to the player, each game tick the first command will be removed from the queue and executed. If the command is not possible, ie moving a peice of the edge of the screen the command will be ignored. When a new peice is added to the board the command queue is wiped clean.
+
+These are the possible commands you have access to:
+
+ - LEFT : move the peice left once, or x--
+ - RIGHT : move the peice right once, or x++
+ - DOWN : move your peice down once, or y++ (top of the board is index 0)
+ - ROTATE_LEFT : rotate the peice left
+ - ROTATE_RIGHT : rotate the peice right
+ - DROP : instantly drop the peice on the board
+
+GameState getCurrentGameState();
+
+This will return a current snapshot of the state of your board. While the actual state of the game may change while you are using the given GameState object, the object will not change. For a more recent state simply call this method again.
+
+Using the GameState object you can do various things.
+
+ can<command name>() - Returns whether the given command is possible in the current state
+ simulate<command name>() - Simulate the given command to see the resulting game state
+ revert() - Revert back to the initial state of the object
+ undo() - Undo a simulated command
+ getBoard() - Get a 2d array of the board at the current state
+  0  : empty space
+  1  : filled space
+  2  : current peice
+  -1 : indestructible tiles
+ getBoardWithLinesRemoved() - Get a 2d array of the board with complete lines removed at the current state
+  (Same numbers as above)
+ getNumberOfLines() - Get the number of complete lines in the current state
+ 
+
+HeueristicAI is a good example to look at for this type of AI
+
+
+
+
+2. You can subclass HeuristicAI and implement a heuristic function that evaluates the given gamestate.
+
+The noteworthy function:
+
+double heuristic(GameState state);
+
+This function will be called with a board state of each possible move. Your job is to evaluate the given state and return a number representing how desireable the state of the board is at the given move. Finally the move with the highest desireablility will be executed.
+
+
+LowestAI is a good example of this type of AI
